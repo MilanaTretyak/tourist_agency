@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Париж на уикенд - TravelNow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: white;
+            color: black;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none; /* Убираем подчеркивание ссылки */
+            color: #0ea5e9; /* Наследует цвет текста */
+        }
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #1d4ed8;
+        }
+        .login-icons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .account-button {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .account-button:hover {
+            background-color: #2563eb;
+        }
+        .tour-container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 0 2rem;
+        }
+        .tour-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .tour-gallery {
+            flex: 1;
+            position: relative;
+        }
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: opacity 0.3s;
+        }
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, border 0.3s;
+            border: 2px solid transparent;
+        }
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+        .thumbnail.active {
+            border: 2px solid #0ea5e9;
+        }
+        .tour-info {
+            flex: 1;
+        }
+        .tour-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        .tour-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+        }
+        .price-container {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+        .price-old {
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+        .price-new {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #10b981;
+        }
+        .discount-badge {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        .booking-button {
+            display: inline-block;
+            background-color: #0ea5e9;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        .booking-button:hover {
+            background-color: #2563eb;
+        }
+        .tour-highlights {
+            margin-bottom: 1.5rem;
+        }
+        .tour-highlights h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #111827;
+        }
+        .tour-highlights ul {
+            list-style-position: inside;
+            color: #4b5563;
+        }
+        .tour-highlights li {
+            margin-bottom: 0.5rem;
+        }
+        .tour-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .details-section {
+            flex: 1;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4b5563;
+        }
+        .itinerary h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 1.5rem 0 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .itinerary h3::after {
+            content: '+';
+            margin-left: auto;
+            font-size: 1.5rem;
+        }
+        .itinerary h3.active::after {
+            content: '-';
+        }
+        .itinerary p {
+            color: #4b5563;
+            margin-bottom: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .itinerary p.active {
+            max-height: 200px;
+        }
+        .reviews-container {
+            margin-top: 3rem;
+        }
+        .review-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .review-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .review-author {
+            font-weight: 700;
+            color: #111827;
+        }
+        .review-rating {
+            color: #fbbf24;
+            font-size: 1.1rem;
+        }
+        .review-text {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #0076fc;
+            color: #fff;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .footer-section {
+            width: 25%;
+            padding: 0 20px;
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+        .footer-section a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+        @media (max-width: 900px) {
+            .tour-header {
+                flex-direction: column;
+            }
+            .tour-details {
+                flex-direction: column;
+            }
+            .footer-section {
+                width: 50%;
+                margin-bottom: 20px;
+            }
+        }
+        @media (max-width: 600px) {
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-section {
+                width: 100%;
+            }
+        }
+
+        /* Общие стили для темной темы */
+    body.dark-theme {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    header, .tour-container, footer {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Темная тема для шапки */
+    .dark-theme header {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+
+    .dark-theme .logo {
+        color: #ffffff;
+    }
+
+    .dark-theme .account-button {
+        background-color: #333;
+        color: #ffffff;
+    }
+
+    .dark-theme .account-button:hover {
+        background-color: #0076fc;
+        color: #ffffff;
+    }
+
+    /* Основной контейнер тура */
+    .dark-theme .tour-container {
+        background-color: #121212;
+    }
+
+     .dark-theme .tour-highlights h3{
+    color:  #4fc3f7;
+}
+
+.dark-theme .tour-highlights li{
+    color:  white;
+}
+
+    /* Галерея */
+    .dark-theme .tour-gallery {
+        background-color: #121212;
+    }
+
+    .dark-theme .thumbnail {
+        border: 2px solid #333;
+    }
+
+    .dark-theme .thumbnail:hover,
+    .dark-theme .thumbnail.active {
+        border-color: #0076fc;
+    }
+
+    /* Информация о туре */
+    .dark-theme .tour-info {
+        background-color: #121212;
+    }
+
+    .dark-theme .tour-title {
+        color: #0076fc;
+    }
+
+    .dark-theme .tour-location {
+        color: #4fc3f7;
+    }
+
+    /* Цены */
+    .dark-theme .price-container {
+        background-color: #1a1a1a;
+    }
+
+    .dark-theme .price-new {
+        color: #4fc3f7;
+    }
+
+    .dark-theme .discount-badge {
+        background-color: #f44336;
+    }
+
+    /* Кнопка бронирования */
+    .dark-theme .booking-button {
+        background-color: #0076fc;
+        color: #ffffff;
+    }
+
+    .dark-theme .booking-button:hover {
+        background-color: #0066d4;
+    }
+
+    /* Детали тура */
+    .dark-theme .details-section {
+        background-color: #252525;
+        border: 1px solid #333;
+    }
+
+    .dark-theme .section-title {
+        color: #0076fc;
+        border-bottom: 1px solid #333;
+    }
+
+    /* Удобства */
+    .dark-theme .amenity-item {
+        color: white;
+    }
+
+    /* Программа тура */
+    .dark-theme .itinerary-day {
+        color: #4fc3f7;
+    }
+
+    .dark-theme .itinerary-content {
+        background-color:  #252525;
+        color: white;
+    }
+
+    /* Отзывы */
+    .dark-theme .review-card {
+        background-color: #252525;
+        border: 1px solid #333;
+    }
+
+      .dark-theme .review-text{
+        color: white;
+    }
+
+    .dark-theme .review-author {
+        color: #0076fc;
+    }
+
+    /* Модальное окно */
+    .dark-theme .auth-modal {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .dark-theme .modal-content {
+        background-color: #252525;
+        border: 1px solid #0076fc;
+    }
+
+    .dark-theme .close-modal {
+        color: #e0e0e0;
+    }
+
+    .dark-theme .login-btn {
+        background-color: #0076fc;
+        color: #ffffff;
+    }
+
+    .dark-theme .register-btn {
+        background-color: #4fc3f7;
+        color: #121212;
+    }
+
+    /* Подвал */
+    .dark-theme footer {
+        background-color: #1a1a1a;
+        border-top: 1px solid #333;
+    }
+
+    .dark-theme .footer-section h3 {
+        color: #0076fc;
+    }
+
+    .dark-theme .footer-section a {
+        color: #e0e0e0;
+    }
+
+    .dark-theme .footer-section a:hover {
+        color: #4fc3f7;
+    }
+
+    .dark-theme .footer-bottom {
+        border-top: 1px solid #333;
+    }
+    </style>
+</head>
+<body>
+     <header>
+        <a href="../osnova_user.html" class="logo"><strong>TravelNow</strong></a>
+        <div class="login-icons">
+            <a href="../osnova.html" class="account-button">Выход</a>
+        </div>
+    </header>
+
+    <div class="tour-container">
+    <div class="tour-header">
+        <div class="tour-gallery">
+            <img src="/static/img/paris_arka.jpg" alt="Париж на уикенд" class="main-image" id="mainImage">
+            <div class="thumbnail-container">
+                <img src="/static/img/paris_arka.jpg" alt="Триумфальная арка" class="thumbnail active" data-full="/static/img/paris_arka.jpg">
+                <img src="/static/img/paris_sena.jpg" alt="Река Сена" class="thumbnail" data-full="/static/img/paris_sena.jpg">
+                <img src="/static/img/paris_luvr.jpg" alt="Лувр" class="thumbnail" data-full="/static/img/paris_luvr.jpg">
+                <img src="/static/img/paris_street.jpg" alt="Квартал" class="thumbnail" data-full="/static/img/paris_street.jpg">
+            </div>
+        </div>
+
+            <div class="tour-info">
+                <h1 class="tour-title">Париж на уикенд</h1>
+                <div class="tour-location">
+                    <span>Франция, Париж</span>
+                </div>
+
+                <div class="price-container">
+                    <div>
+                        <span class="price-old">₽80 000</span>
+                        <span class="price-new">₽64 000</span>
+                        <span class="discount-badge">-20%</span>
+                    </div>
+                    <p>Цена за двоих на 3 ночи</p>
+                </div>
+
+                <div class="tour-highlights">
+                    <h3>Основные моменты тура:</h3>
+                    <ul>
+                        <li>Авиаперелет (включен в стоимость)</li>
+                        <li>Проживание в отеле 4* в центре города</li>
+                        <li>Завтраки включены</li>
+                        <li>Обзорная экскурсия по Парижу</li>
+                        <li>Посещение Эйфелевой башни</li>
+                    </ul>
+                </div>
+
+                 <a href="#" class="booking-button">Забронировать тур</a>
+            </div>
+        </div>
+
+        <div class="tour-details">
+            <div class="details-section">
+                <h2 class="section-title">Описание тура</h2>
+                <p>Романтический уикенд в Париже - идеальный способ провести время вдвоем. Этот тур предлагает оптимальное сочетание экскурсий и свободного времени.</p>
+                <p>Вы посетите знаменитые достопримечательности: Эйфелеву башню, Лувр, Монмартр и Собор Парижской Богоматери. Прогуляетесь по Елисейским полям и насладитесь атмосферой самого романтичного города мира.</p>
+                <p>В стоимость включены регулярные авиаперелеты. Цена может меняться в зависимости от тарифа авиакомпании.</p>
+            </div>
+
+            <div class="details-section">
+                <h2 class="section-title">Удобства</h2>
+                <div class="amenities-grid">
+                    <div class="amenity-item">✓ Бесплатный Wi-Fi</div>
+                    <div class="amenity-item">✓ Кондиционер</div>
+                    <div class="amenity-item">✓ Трансфер из аэропорта</div>
+                    <div class="amenity-item">✓ Русскоговорящий гид</div>
+                    <div class="amenity-item">✓ Завтрак "шведский стол"</div>
+                    <div class="amenity-item">✓ Медицинская страховка</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h2 class="section-title">Программа тура</h2>
+            <div class="itinerary">
+                <h3 class="itinerary-day">День 1: Прибытие</h3>
+                <p class="itinerary-content">Встреча в аэропорту Шарль де Голль, трансфер в отель. Свободное время для отдыха. Вечерняя прогулка на кораблике по Сене.</p>
+
+                <h3 class="itinerary-day">День 2: Обзорная экскурсия</h3>
+                <p class="itinerary-content">Экскурсия по основным достопримечательностям: Эйфелева башня, Триумфальная арка, Елисейские поля. Свободное время для шоппинга.</p>
+
+                <h3 class="itinerary-day">День 3: Лувр и Монмартр</h3>
+                <p class="itinerary-content">Посещение музея Лувр, прогулка по богемному кварталу Монмартр. Ужин в традиционном французском ресторане (оплачивается отдельно).</p>
+
+                <h3 class="itinerary-day">День 4: Отъезд</h3>
+                <p class="itinerary-content">Свободное время до трансфера в аэропорт. Возможность посетить Галерею Лафайет.</p>
+            </div>
+        </div>
+
+        <div class="reviews-container">
+            <h2 class="section-title">Отзывы</h2>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="review-author">Анна</span>
+                    <span class="review-rating">★★★★★</span>
+                </div>
+                <p class="review-text">Незабываемый уикенд в Париже! Все было организовано на высшем уровне. Особенно понравилась экскурсия на кораблике по Сене - виды ночного Парижа просто завораживают. Отель расположен очень удобно, в пешей доступности от основных достопримечательностей.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="review-author">Дмитрий</span>
+                    <span class="review-rating">★★★★☆</span>
+                </div>
+                <p class="review-text">Отличный тур для первого знакомства с Парижем. Гид знающий и внимательный, программа насыщенная, но не утомительная. Единственное - хотелось бы больше свободного времени для самостоятельных прогулок.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="review-author">Екатерина</span>
+                    <span class="review-rating">★★★★★</span>
+                </div>
+                <p class="review-text">Это был наш второй медовый месяц, и он превзошел все ожидания! Организация на высоте, экскурсии интересные, отель просто шикарный. Обязательно порекомендую ваше агентство друзьям!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для изображений -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Увеличенное изображение">
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <ul>
+                    <li><a href="#">История компании</a></li>
+                    <li><a href="/templates/yes_inf.html">Информация</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Услуги</h3>
+                <ul>
+                    <li><a href="../osnova_user.html">Перейти на главную</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li>Адрес: ул. Якуба Коласа, д. 28, г. Минск</li>
+                    <li>Телефон: +375 (29) 123-45-67</li>
+                    <li>E-mail: info@travelnow.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Присоединяйтесь</h3>
+                <ul>
+                   <li><a href="https://vk.com/tvoi_antagonist">Vkontacte</a></li>
+          <li><a href="https://www.instagram.com/milana.tretyak/">Instagram</a></li>
+          <li><a href="https://www.pinterest.com/Ynicalno/">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Туристическое Агентство TravelNow. Все права защищены.
+        </div>
+    </footer>
+
+  <script>
+       document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.createElement('button');
+        themeToggle.id = 'theme-toggle';
+        themeToggle.className = 'theme-button';
+        themeToggle.textContent = '🌙';
+        themeToggle.style.position = 'fixed';
+        themeToggle.style.bottom = '20px';
+        themeToggle.style.right = '20px';
+        themeToggle.style.zIndex = '1000';
+        themeToggle.style.border = 'none';
+        themeToggle.style.borderRadius = '50%';
+        themeToggle.style.width = '50px';
+        themeToggle.style.height = '50px';
+        themeToggle.style.fontSize = '24px';
+        themeToggle.style.cursor = 'pointer';
+        themeToggle.style.backgroundColor = '#333';
+        themeToggle.style.color = '#fff';
+        themeToggle.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+        document.body.appendChild(themeToggle);
+
+        // Проверяем сохраненную тему
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggle.textContent = '☀️';
+            themeToggle.style.backgroundColor = '#0076fc';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+
+        // Обработчик клика
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+
+            const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+
+            // Анимация иконки
+            themeToggle.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+                themeToggle.style.backgroundColor = theme === 'dark' ? '#0076fc' : '#333';
+                themeToggle.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+
+    // Переключение миниатюр (без открытия модального окна)
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            // Удаляем active у всех миниатюр
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            // Добавляем active к текущей
+            this.classList.add('active');
+            // Меняем основное изображение
+            document.getElementById('mainImage').src = this.dataset.full;
+        });
+    });
+
+    // Удаляем обработчик клика для модального окна
+    document.querySelectorAll('#mainImage, .thumbnail').forEach(img => {
+        img.style.cursor = 'default'; // Меняем курсор на стандартный
+    });
+
+    const reviewCards = document.querySelectorAll('.review-card');
+
+    const showReviews = () => {
+        reviewCards.forEach((card, index) => {
+            const cardPosition = card.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+
+            if(cardPosition < screenPosition) {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 200);
+            }
+        });
+    };
+
+    window.addEventListener('scroll', showReviews);
+    window.addEventListener('load', showReviews);
+
+    // Аккордеон для программы тура
+    const itineraryDays = document.querySelectorAll('.itinerary-day');
+
+    itineraryDays.forEach(day => {
+        day.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            content.classList.toggle('active');
+        });
+    });
+
+    // Кнопка бронирования
+    const bookButton = document.querySelector('.booking-button');
+    if(bookButton) {
+        bookButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Спасибо за ваш интерес к этому туру! Наш менеджер свяжется с вами в ближайшее время для подтверждения бронирования.');
+
+            // Анимация кнопки
+            this.textContent = 'Бронируем...';
+            this.style.backgroundColor = '#10b981';
+
+            setTimeout(() => {
+                this.textContent = 'Забронировано!';
+                this.style.backgroundColor = '#10b981';
+            }, 1500);
+        });
+    }
+
+    // Плавная прокрутка для якорей
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if(target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Собираем чемодан в путешествие | TravelNow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: white;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none; /* Убираем подчеркивание ссылки */
+            color: #0ea5e9; /* Наследует цвет текста */
+        }
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #1d4ed8;
+        }
+        .login-icons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .account-button {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .account-button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Стили для статьи */
+        .article-container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .article-header {
+            text-align: center;
+
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .article-image:hover {
+            transform: scale(1.01);
+        }
+
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .article-content p {
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            margin: 50px 0 20px;
+            color: #1e40af;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .article-content h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: 80%;
+            width: 5px;
+            background: #0ea5e9;
+            border-radius: 5px;
+        }
+
+        .article-content h3 {
+            font-size: 1.4rem;
+            margin: 40px 0 15px;
+            color: #1e40af;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #0ea5e9;
+            padding: 15px 20px;
+            background: #f8fafc;
+            margin: 30px 0;
+            font-style: italic;
+            color: #475569;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .place-location svg {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            fill: #64748b;
+        }
+
+        .article-title{
+            text-align: center;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 50px 0;
+        }
+
+        .article-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .article-tag:hover {
+            background: #bae6fd;
+        }
+
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .action-button {
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .back-button:hover {
+            background: #e2e8f0;
+        }
+
+        .share-button {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .share-button:hover {
+            background: #0284c7;
+        }
+
+        .floating-share {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .share-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .share-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #0ea5e9;
+            z-index: 1001;
+            transition: width 0.1s;
+        }
+/* Убираем кружки с восклицательными знаками */
+.tip-header svg {
+    display: none; /* Просто скрываем иконку */
+}
+
+/* Стили для кнопок "Секретов упаковки" */
+.packing-button {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(14, 165, 233, 0.3);
+}
+
+.packing-button:hover {
+    background: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+}
+
+.packing-button svg {
+    transition: transform 0.3s;
+}
+
+#prevTip:hover svg {
+    transform: translateX(-3px);
+}
+
+#nextTip:hover svg {
+    transform: translateX(3px);
+}
+
+.pagination-indicator {
+    background: #f1f5f9;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Стили для карточек советов */
+.packing-tip {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 4px solid #0ea5e9;
+}
+
+.packing-tip h3 {
+    color: #1e40af;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.packing-tip p {
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.demo-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+       /* Стили для чек-листа */
+.interactive-checklist {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.checklist-container {
+    margin: 15px 0;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 8px 0;
+    background: white;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.checklist-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(14,165,233,0.1);
+}
+
+.checklist-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #0ea5e9;
+    border-radius: 6px;
+    margin-right: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.checklist-checkbox:checked {
+    background-color: #0ea5e9;
+}
+
+.checklist-checkbox:checked::after {
+    content: "✓";
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+}
+
+#checklistProgress {
+    color: #0ea5e9;
+    font-weight: bold;
+}
+
+.save-checklist {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.save-checklist:hover {
+    background: #0284c7;
+    transform: translateY(-2px);
+}
+
+/* Стили для табов */
+.packing-tabs {
+    margin: 30px 0;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px;
+    background: #e0f2fe;
+    border: none;
+    border-radius: 8px;
+    color: #0369a1;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-button.active {
+    background: #0ea5e9;
+    color: white;
+}
+
+.tab-button:not(.active):hover {
+    background: #bae6fd;
+}
+
+.tab-content {
+    display: none;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Стили для калькулятора */
+.weight-calculator {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.calculator {
+    display: grid;
+    gap: 15px;
+}
+
+.calculator label {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.calculator input, .calculator select {
+    padding: 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.calculator input:focus, .calculator select:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+}
+
+#calculateBtn {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#calculateBtn:hover {
+    background: #0284c7;
+}
+
+.result {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+}
+
+#calculatedWeight {
+    color: #0ea5e9;
+    font-size: 24px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 80px;
+    background: white;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px;
+    background: #e0f2fe;
+    border: none;
+    border-radius: 8px;
+    color: #0369a1;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.tab-button.active,
+.tab-button:hover {
+    background: #0ea5e9;
+    color: white;
+    text-decoration: none;
+}
+
+/* Плавная прокрутка */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Подсветка активного раздела */
+:target {
+    animation: highlight 1.5s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: rgba(14, 165, 233, 0.1); }
+    100% { background-color: transparent; }
+}
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-image {
+                height: 350px;
+            }
+
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .article-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .article-title {
+                font-size: 1.7rem;
+            }
+
+            .article-image {
+                height: 250px;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+       footer {
+      background-color: #0076fc;
+      color: #fff;
+      padding: 40px 0;
+}
+.footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+}
+.footer-section {
+      width: 25%;
+      padding: 0 20px;
+}
+.footer-section h3 {
+      margin-top: 0;
+}
+.footer-section ul {
+      list-style-type: none;
+      padding: 0;
+}
+.footer-section li {
+      margin-bottom: 10px;
+}
+.footer-section a {
+      color: #fff;
+      text-decoration: none;
+}
+    .footer-section a:hover {
+      text-decoration: underline;
+}
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+        @media (max-width: 768px) {
+            .footer-section {
+                width: 50%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-section {
+                width: 100%;
+            }
+        }
+
+        /* Темная тема */
+.dark-theme {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+.dark-theme header {
+    background-color: #1e293b;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .logo {
+    color: #7dd3fc;
+}
+
+.dark-theme nav a {
+    color: #e2e8f0;
+}
+
+.dark-theme nav a:hover {
+    color: #93c5fd;
+}
+
+.dark-theme .account-button {
+    background-color: #1e40af;
+}
+
+.dark-theme .account-button:hover {
+    background-color: #1e3a8a;
+}
+
+/* Стили статьи в темной теме */
+.dark-theme .article-container {
+    background-color: #0f172a;
+}
+
+.dark-theme .article-category {
+    background: #1e3a8a;
+    color: #bfdbfe;
+}
+
+.dark-theme .article-title {
+    color: #f8fafc;
+}
+
+.dark-theme .article-meta {
+    color: #94a3b8;
+}
+
+.dark-theme .article-content {
+    color: #cbd5e1;
+}
+
+.dark-theme .article-content h2,
+.dark-theme .article-content h3 {
+    color: #93c5fd;
+}
+
+.dark-theme .article-content h2::before {
+    background: #3b82f6;
+}
+
+.dark-theme .article-content blockquote {
+    background: #1e293b;
+    color: #94a3b8;
+    border-left-color: #3b82f6;
+}
+
+.dark-theme .article-content ul,
+.dark-theme .article-content ol {
+    color: #cbd5e1;
+}
+
+.dark-theme .article-tag {
+    background: #1e3a8a;
+    color: #bfdbfe;
+}
+
+.dark-theme .article-tag:hover {
+    background: #1e40af;
+}
+
+.dark-theme .back-button {
+    background: #1e293b;
+    color: #cbd5e1;
+}
+
+.dark-theme .back-button:hover {
+    background: #334155;
+}
+
+.dark-theme .share-button {
+    background: #1e40af;
+}
+
+.dark-theme .share-button:hover {
+    background: #1e3a8a;
+}
+
+.dark-theme .share-icon {
+    background: #1e293b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .progress-bar {
+    background: #3b82f6;
+}
+
+/* Темная тема для секции "Секреты упаковки" */
+.dark-theme .packing-demo {
+    background-color: #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .packing-button {
+    background-color: #1e40af;
+    color: #e2e8f0;
+    box-shadow: 0 2px 5px rgba(30, 64, 175, 0.3);
+}
+
+.dark-theme .packing-button:hover {
+    background-color: #1e3a8a;
+    color: #ffffff;
+}
+
+.dark-theme .pagination-indicator {
+    background-color: #334155;
+    color: #94a3b8;
+}
+
+.dark-theme .packing-tip {
+    background-color: #334155;
+    border-left: 4px solid #3b82f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .packing-tip h3 {
+    color: #93c5fd;
+}
+
+.dark-theme .packing-tip p {
+    color: #cbd5e1;
+}
+
+/* Иконки в кнопках */
+.dark-theme .packing-button svg path {
+    fill: #e2e8f0;
+}
+
+/* Анимации при наведении */
+.dark-theme .packing-button:hover svg path {
+    fill: #ffffff;
+}
+
+.dark-theme #prevTip:hover svg {
+    transform: translateX(-3px);
+}
+
+.dark-theme #nextTip:hover svg {
+    transform: translateX(3px);
+}
+
+/* Стили для интерактивных элементов */
+.dark-theme .interactive-checklist {
+    background: #1e293b;
+}
+
+.dark-theme .checklist-item {
+    background: #334155;
+}
+
+.dark-theme .checklist-checkbox {
+    border-color: #3b82f6;
+}
+
+.dark-theme .checklist-checkbox:checked {
+    background-color: #3b82f6;
+}
+
+.dark-theme .save-checklist {
+    background: #1e40af;
+}
+
+.dark-theme .save-checklist:hover {
+    background: #1e3a8a;
+}
+
+.dark-theme .tab-button {
+    background: #334155;
+    color: #e2e8f0;
+}
+
+.dark-theme .tab-button.active {
+    background: #1e40af;
+    color: white;
+}
+
+.dark-theme .tab-button:not(.active):hover {
+    background: #475569;
+}
+
+.dark-theme .tab-content {
+    background: #1e293b;
+}
+
+.dark-theme .weight-calculator {
+    background: #1e293b;
+}
+
+.dark-theme .calculator input,
+.dark-theme .calculator select {
+    background: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+.dark-theme .calculator label {
+    color: #e2e8f0;
+}
+
+.dark-theme .result {
+    background: #334155;
+    color: #e2e8f0;
+}
+
+.dark-theme #calculatedWeight {
+    color: #7dd3fc;
+}
+
+.dark-theme .tab-buttons {
+    background: #1e293b;
+}
+
+/* Футер в темной теме */
+.dark-theme footer {
+    background-color: #1e40af;
+}
+
+.dark-theme .footer-section a:hover {
+    color: #bfdbfe;
+}
+
+.dark-theme .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+    </style>
+</head>
+<body>
+    <!-- Прогресс-бар чтения -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <header>
+        <a href="../osnova.html" class="logo"><strong>TravelNow</strong></a>
+        <div class="login-icons">
+            <a href="../osnova_user.html" class="account-button">Аккаунт</a>
+        </div>
+    </header>
+
+    <script>
+    // Проверяем сохраненную тему
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+
+    // Функция переключения темы
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+
+        // Обновляем иконку кнопки
+        const themeToggle = document.querySelector('.theme-toggle');
+        if (themeToggle) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+    }
+
+    // Добавляем кнопку переключения темы в header
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginIcons = document.querySelector('.login-icons');
+        if (loginIcons) {
+            const themeToggle = document.createElement('button');
+            themeToggle.className = 'theme-toggle';
+            themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            themeToggle.onclick = toggleTheme;
+            themeToggle.style.cssText = `
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                margin-right: 1rem;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            `;
+            loginIcons.insertBefore(themeToggle, loginIcons.firstChild);
+        }
+    });
+</script>
+
+    <div class="article-container">
+        <div class="article-header">
+            <span class="article-category">Советы</span>
+            <h1 class="article-title">Как собрать чемодан для путешествия: полный гид</h1>
+            <div class="article-meta">
+                <span>10 мая 2024</span>
+                <span>5 мин чтения</span>
+                <span>982 просмотров</span>
+            </div>
+            <img src="/static/img/blog_st2.jpg" alt="Сбор чемодана" class="article-image" id="mainArticleImage">
+        </div>
+
+        <div class="article-content">
+            <p>Сбор чемодана — настоящее искусство. Слишком много вещей — и вы платите за перевес, слишком мало — и вам чего-то не хватает. Этот гид поможет вам найти идеальный баланс.</p>
+
+            <div class="interactive-checklist">
+                <h2>Чек-лист сборов <span id="checklistProgress">0%</span></h2>
+                <div class="checklist-container" id="checklistContainer">
+                    <!-- Сгенерируется через JS -->
+                </div>
+                <button class="save-checklist" id="saveChecklist">Сохранить мой список</button>
+            </div>
+
+            <h2>Основные правила</h2>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <h3>Правило 3-х дней</h3>
+                </div>
+                <p>Возьмите вещи на первые 3 дня, а не на весь срок. Практически везде можно постирать одежду. Это сократит объем на 40%.</p>
+            </div>
+
+            <div class="packing-tabs">
+    <div class="tab-buttons">
+        <a href="#clothes-section" class="tab-button active">Одежда</a>
+        <a href="#cosmetics-section" class="tab-button">Косметика</a>
+        <a href="#documents-section" class="tab-button">Документы</a>
+        <a href="#tech-section" class="tab-button">Техника</a>
+    </div>
+</div>
+
+<!-- Контент разделов -->
+<div class="article-content">
+
+    <h2 id="clothes-section">Одежда</h2>
+    <div class="tip-card">
+        <div class="tip-header">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <h3>Базовый гардероб</h3>
+        </div>
+        <ul>
+            <li><strong>3 правила:</strong> 3 верха, 2 низа, 3 аксессуара - этого достаточно для недельной поездки</li>
+            <li><strong>Многослойность:</strong> Легкая куртка + футболка + рубашка = варианты на разную погоду</li>
+            <li><strong>Цветовая схема:</strong> Выберите 2-3 основных цвета, чтобы все сочеталось</li>
+            <li><strong>Универсальная обувь:</strong> 1 пара удобных кроссовок + 1 пара легких сандалий</li>
+        </ul>
+    </div>
+
+    <h2 id="cosmetics-section">Косметика</h2>
+    <div class="tip-card">
+        <div class="tip-header">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <h3>Минимальный набор</h3>
+        </div>
+        <ul>
+            <li><strong>100 мл правило:</strong> Перелейте жидкости в travel-size флаконы</li>
+            <li><strong>Твердые аналоги:</strong> Шампуни-батончики экономят место и не прольются</li>
+            <li><strong>Многофункциональные средства:</strong> Крем 3-в-1 (лицо+тело+руки)</li>
+            <li><strong>Аптечка:</strong> Пластырь, обезболивающее, антигистаминное, сорбент</li>
+        </ul>
+    </div>
+
+    <h2 id="documents-section">Документы</h2>
+    <div class="tip-card">
+        <div class="tip-header">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <h3>Безопасность</h3>
+        </div>
+        <ul>
+            <li><strong>Копии:</strong> Скан паспорта, визы и страховки в облаке и на бумаге</li>
+            <li><strong>Расположение:</strong> Документы всегда с собой в специальном органайзере</li>
+            <li><strong>Электронные билеты:</strong> Сохраните на телефон и распечатайте</li>
+            <li><strong>Экстренные контакты:</strong> Запишите адрес посольства и телефон страховой</li>
+        </ul>
+    </div>
+
+    <h2 id="tech-section">Техника</h2>
+    <div class="tip-card">
+        <div class="tip-header">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <h3>Гаджеты</h3>
+        </div>
+        <ul>
+            <li><strong>Универсальный адаптер:</strong> С регулируемыми разъемами для разных стран</li>
+            <li><strong>Powerbank:</strong> Не более 27000 mAh для авиаперелетов</li>
+            <li><strong>Защита:</strong> Водонепроницаемый чехол для телефона</li>
+            <li><strong>Оффлайн-карты:</strong> Скачайте карты города в Google Maps</li>
+        </ul>
+    </div>
+</div>
+
+                <div class="tab-content active" id="clothes">
+                    <ul>
+                        <li><strong>Рулонная упаковка</strong> экономит до 30% места</li>
+                        <li>Используйте компрессионные пакеты для объемных вещей</li>
+                        <li>Возьмите базовые вещи, которые можно комбинировать</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="cosmetics">
+                    <ul>
+                        <li>Перелейте жидкости в контейнеры до 100 мл</li>
+                        <li>Используйте твердые аналоги (шампуни, дезодоранты)</li>
+                        <li>Мини-версии косметики — ваш лучший друг</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="documents">
+                    <ul>
+                        <li>Сделайте копии документов и сохраните в облаке</li>
+                        <li>Возьмите международную страховку</li>
+                        <li>Распечатайте брони отелей и билетов</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="tech">
+                    <ul>
+                        <li>Универсальный адаптер вместо набора</li>
+<li>Powerbank не более 27000 mAh для авиаперелетов</li>
+                        <li>Используйте мультизарядные устройства</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Секреты упаковки</h2>
+
+<div class="packing-demo">
+    <div class="demo-controls">
+        <button id="prevTip" class="packing-button">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" fill="white"/></svg>
+            Назад
+        </button>
+
+        <div class="pagination-indicator">
+            <span id="tipNumber">1/5</span>
+        </div>
+
+        <button id="nextTip" class="packing-button">
+            Вперед
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill="white"/></svg>
+        </button>
+    </div>
+
+    <div class="demo-content" id="packingTips">
+        <div class="packing-tip">
+            <h3>Метод "Бутерброда"</h3>
+            <p>Укладывайте вещи слоями: тяжелые вниз, средние в центр, легкие сверху. Между слоями — пластиковые папки для жесткости.</p>
+        </div>
+        <!-- Остальные советы будут подгружены через JS -->
+    </div>
+</div>
+
+            <div class="weight-calculator">
+                <h3>Калькулятор веса чемодана</h3>
+                <div class="calculator">
+                    <label for="tripDuration">Длительность поездки (дни):</label>
+                    <input type="number" id="tripDuration" min="1" max="30" value="7">
+
+                    <label for="tripType">Тип поездки:</label>
+                    <select id="tripType">
+                        <option value="beach">Пляжный отдых</option>
+                        <option value="city">Городской туризм</option>
+                        <option value="business">Бизнес-поездка</option>
+                        <option value="hiking">Поход/Треккинг</option>
+                    </select>
+
+                    <button id="calculateBtn">Рассчитать</button>
+
+                    <div class="result" id="weightResult">
+                        Рекомендуемый вес: <span id="calculatedWeight">-</span> кг
+                    </div>
+                </div>
+            </div>
+
+            <div class="article-tags">
+                <a href="#" class="article-tag">#Советы</a>
+                <a href="#" class="article-tag">#Чемодан</a>
+                <a href="#" class="article-tag">#Подготовка</a>
+                <a href="#" class="article-tag">#Лайфхаки</a>
+            </div>
+
+            <div class="article-actions">
+                <a href="no_blog.html" class="action-button back-button">
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    Назад к блогу
+                </a>
+                <a href="#" class="action-button share-button" id="shareButton">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                    Поделиться
+                </a>
+            </div>
+        </div>
+    </div>
+
+      <!-- Плавающие кнопки соцсетей -->
+<div class="floating-share">
+    <div class="share-icon">
+        <a href="https://www.instagram.com/milana.tretyak/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="#E1306C">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+        </a>
+    </div>
+    <div class="share-icon">
+        <a href="https://vk.com/tvoi_antagonist" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="#4C75A3">
+                <path d="M15.073 2H8.938C3.332 2 2 3.333 2 8.927v6.136C2 20.667 3.323 22 8.927 22h6.136C20.667 22 22 20.677 22 15.073V8.938C22 3.332 20.677 2 15.073 2zm3.073 14.27h-1.459c-.552 0-.718-.447-1.708-1.437-.834-.834-1.209-.938-1.417-.938-.302 0-.385.083-.385.5v1.312c0 .354-.115.563-1.042.563a5.692 5.692 0 01-3.979-1.708A11.626 11.626 0 015 8.385c0-.24.083-.448.531-.448h1.459c.375 0 .51.167.656.552.708 2.084 1.916 3.854 2.406 3.854.188 0 .27-.083.27-.552v-2.146c-.062-.979-.582-1.062-.582-1.416a.36.36 0 01.375-.334h2.292c.313 0 .417.156.417.531v2.896c0 .313.135.417.229.417.188 0 .333-.104.677-.448 1.083-1.083 1.771-2.771 1.771-2.771.104-.24.271-.448.656-.448h1.459c.437 0 .53.229.53.448 0 .479-1.687 1.791-1.687 1.854-.104.104-.156.24-.104.406.052.25.75.802 1.021 1.104.354.354.729.729.729.979 0 .24-.167.385-.438.385z"/>
+            </svg>
+        </a>
+    </div>
+    <div class="share-icon">
+        <a href="https://www.pinterest.com/Ynicalno/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="#E60023">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1.35-5.5c-.63 0-1.1-.28-1.34-.86-.06-.12-.1-.29-.1-.49 0-.36.1-.65.27-.86.1-.14.3-.23.6-.23.33 0 .54.12.67.35.13.23.2.55.2.96 0 .41-.06.72-.18.92-.12.21-.35.31-.62.31zm3.35-1.14c-.3 0-.52-.1-.67-.3-.15-.2-.23-.52-.23-.96 0-.44.08-.76.23-.98.15-.2.37-.3.67-.3.31 0 .54.1.68.3.14.2.21.53.21.98 0 .45-.07.77-.21.97-.14.2-.37.3-.68.3z"/>
+            </svg>
+        </a>
+    </div>
+</div>
+
+      <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <ul>
+                    <li><a href="#">История компании</a></li>
+                    <li><a href="/templates/no_inf.html">Информация</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Услуги</h3>
+                <ul>
+                    <li><a href="../osnova.html">Перейти на главную</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li>Адрес: ул. Якуба Коласа, д. 28, г. Минск</li>
+                    <li>Телефон: +375 (29) 123-45-67</li>
+                    <li>E-mail: info@travelnow.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Присоединяйтесь</h3>
+                <ul>
+                   <li><a href="https://vk.com/tvoi_antagonist">Vkontacte</a></li>
+          <li><a href="https://www.instagram.com/milana.tretyak/">Instagram</a></li>
+          <li><a href="https://www.pinterest.com/Ynicalno/">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Туристическое Агентство TravelNow. Все права защищены.
+        </div>
+    </footer>
+
+    <script>
+
+        // Прогресс-бар чтения
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+      document.addEventListener('DOMContentLoaded', function() {
+    // Чек-лист сборов
+    const checklistItems = [
+        "Паспорт и визы",
+        "Билеты и брони",
+        "Кредитная карта и наличные",
+        "Лекарства (аптечка)",
+        "Телефон и зарядка",
+        "Адаптер для розеток",
+        "Средства гигиены",
+        "Смена белья (3 комплекта)",
+        "Удобная обувь",
+        "Зонт/дождевик"
+    ];
+
+    const checklistContainer = document.getElementById('checklistContainer');
+    const checklistProgress = document.getElementById('checklistProgress');
+    const saveChecklistBtn = document.getElementById('saveChecklist');
+
+    // Генерация чек-листа
+    function renderChecklist() {
+        checklistContainer.innerHTML = '';
+        checklistItems.forEach((item, index) => {
+            const checkboxId = `item-${index}`;
+            const checklistItem = document.createElement('div');
+            checklistItem.className = 'checklist-item';
+            checklistItem.innerHTML = `
+                <input type="checkbox" id="${checkboxId}" class="checklist-checkbox">
+                <label for="${checkboxId}">${item}</label>
+            `;
+            checklistContainer.appendChild(checklistItem);
+        });
+
+        // Добавляем обработчики событий
+        addCheckboxEventListeners();
+
+        // Сбрасываем прогресс
+        updateChecklistProgress();
+    }
+
+    // Обновление прогресса
+    function updateChecklistProgress() {
+        const checkboxes = document.querySelectorAll('.checklist-checkbox');
+        const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const total = checkboxes.length;
+        const percent = Math.round((checked / total) * 100);
+        checklistProgress.textContent = `${percent}%`;
+    }
+
+    // Добавление обработчиков событий
+    function addCheckboxEventListeners() {
+        const checkboxes = document.querySelectorAll('.checklist-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateChecklistProgress);
+        });
+    }
+
+    // Обработчик кнопки сохранения (теперь просто сбрасывает)
+    saveChecklistBtn.addEventListener('click', function() {
+        // Удаляем сохраненные данные, если они были
+        localStorage.removeItem('packingChecklist');
+
+        // Сбрасываем все чекбоксы
+        const checkboxes = document.querySelectorAll('.checklist-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
+
+        // Обновляем прогресс
+        updateChecklistProgress();
+
+        alert('Все чекбоксы сброшены! Чтобы Ваши ответы сохранились, войдите в аккаунт');
+    });
+
+    // Инициализация чек-листа
+    renderChecklist();
+});
+
+        // Табы с категориями
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+
+                // Убираем активные классы
+                document.querySelectorAll('.tab-button').forEach(btn =>
+                    btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content =>
+                    content.classList.remove('active'));
+
+                // Добавляем активные классы
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+       // Карусель советов по упаковке
+const packingTips = [
+    {
+        title: "Метод 'Бутерброда'",
+        content: "Укладывайте вещи слоями: тяжелые вниз, средние в центр, легкие сверху. Между слоями — пластиковые папки для жесткости."
+    },
+    {
+        title: "Используйте багажные петли",
+        content: "Прикрепите яркую ленту или уникальный багажный ремень — это поможет быстро найти свой чемодан на ленте."
+    },
+    {
+        title: "Пакеты для грязного белья",
+        content: "Возьмите несколько зип-пакетов для грязной одежды. Это сохранит чистые вещи свежими."
+    },
+    {
+        title: "Документы под рукой",
+        content: "Паспорт, билеты и страховку храните в специальном органайзере во внешнем кармане рюкзака или сумки."
+    },
+    {
+        title: "Техника в ручной клади",
+        content: "Все ценные гаджеты берите в салон. Багаж могут потерять, а данные восстановить сложнее чем вещи."
+    }
+];
+
+let currentTip = 0;
+const tipNumber = document.getElementById('tipNumber');
+const packingTipsContainer = document.getElementById('packingTips');
+
+function showTip(index) {
+    currentTip = index;
+    tipNumber.textContent = `${currentTip + 1}/${packingTips.length}`;
+    packingTipsContainer.innerHTML = `
+        <div class="packing-tip">
+            <h3>${packingTips[currentTip].title}</h3>
+            <p>${packingTips[currentTip].content}</p>
+        </div>
+    `;
+}
+
+document.getElementById('prevTip').addEventListener('click', () => {
+    showTip((currentTip - 1 + packingTips.length) % packingTips.length);
+});
+
+document.getElementById('nextTip').addEventListener('click', () => {
+    showTip((currentTip + 1) % packingTips.length);
+});
+
+// Инициализация
+showTip(0);
+
+        // Калькулятор веса
+        document.getElementById('calculateBtn').addEventListener('click', () => {
+            const days = parseInt(document.getElementById('tripDuration').value);
+            const type = document.getElementById('tripType').value;
+
+            let baseWeight;
+            switch(type) {
+                case 'beach': baseWeight = 5; break;
+                case 'city': baseWeight = 7; break;
+                case 'business': baseWeight = 6; break;
+                case 'hiking': baseWeight = 8; break;
+                default: baseWeight = 6;
+            }
+
+            const calculated = Math.min(baseWeight + Math.floor(days / 3), 23);
+            document.getElementById('calculatedWeight').textContent = calculated;
+        });
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChecklist();
+            showTip(0);
+
+            // Обработка чек-листа
+            document.querySelectorAll('.checklist-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateChecklistProgress);
+            });
+
+            // Кнопка сохранения
+            document.getElementById('saveChecklist').addEventListener('click', () => {
+                alert('Ваш список сохранен! Вы можете вернуться к нему в любое время.');
+            });
+        });
+    </script>
+</body>
+</html>
